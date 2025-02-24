@@ -24,6 +24,8 @@ import { TournamentModule } from './tournament/tournament.module';
 import { GameGateway } from './websocket-game comms/providers/gamegateway';
 import { GameModule } from './websocket-game comms/game.module';
 import { AchievementModule } from './achievement/achievement.module';
+import { AnalyticsController } from './analytics.controller';
+import { AnalyticsModule } from './analytics/analytics.module';
 import { SocialModule } from './social/social.module';
 import { AchievementModule } from './achievement/achievement.module';
 
@@ -52,8 +54,9 @@ import { AchievementModule } from './achievement/achievement.module';
     TournamentModule,
     AchievementModule,
     SocialModule,
+    AnalyticsModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, AnalyticsController],
   providers: [
     AppService,
     {

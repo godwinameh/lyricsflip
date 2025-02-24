@@ -5,32 +5,36 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany
 } from 'typeorm';
+import { Analytics } from '../analytics/analytics.entity'; // Import Analytics entity
 import { UserRole } from '../common/enums/role.enum';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string; // Unique identifier for the user
-
-  // Common Attributes
-  @Column({ unique: true })
-  username: string; // The username for the player
+  id: string;
 
   @Column({ unique: true })
-  email: string; // Player's email for account identification and recovery
+  username: string;
 
-  @Exclude() // Passwords should not be returned when the user is returned
+  @Column({ unique: true })
+  email: string;
+
+  @Exclude()
   @Column()
-  password: string; // Hashed password for security
+  password: string;
 
   @Column({ nullable: true })
-  avatar: string; // Optional profile picture URL
+  avatar: string;
 
   @Column({ default: 0 })
-  tokens: number; // Amount of in-game tokens the player owns
+  tokens: number;
 
-  // Player Attributes
+  //  Correct One-to-Many relationship with Analytics
+  @OneToMany(() => Analytics, (analytics) => analytics.player)
+  analytics: Analytics[];
+
   @Column({ nullable: true })
   firstname: string;
 
@@ -38,25 +42,24 @@ export class User {
   lastname: string;
 
   @Column({ default: 0 })
-  totalScore: number; // Cumulative score across all games played
+  totalScore: number;
 
   @Column({ default: 0 })
-  gamesPlayed: number; // Total number of games the user has participated in
+  gamesPlayed: number;
 
   @Column({ default: 0 })
-  gamesWon: number; // Number of games the user has won
+  gamesWon: number;
 
-  // Role Attribute
   @Column({
     type: 'enum',
     enum: UserRole,
     default: UserRole.USER,
   })
-  role: UserRole; // Users roles (admin, player or user) refer to UserRole enum
+  role: UserRole;
 
   @CreateDateColumn()
-  createdAt: Date; // Timestamp for when the account was created
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date; // Timestamp for the last account update
+  updatedAt: Date;
 }
